@@ -9,7 +9,12 @@ results will be displayed on your screen. In order to remove any executible file
 
 
 ## Description
-
+The program will generate n random numbers and insert them in the hash table with the aid of the hash function. 
+The hash function for this program will use a simple modulus operator, key % m, where m is the size of the hashtable. 
+Collisions will be resolved using the standard linear probing (for closed hashing). The program will then print the hash table. 
+The program will attempt to search for each of the n inputs in the hash table (using the same hash function and the corresponding
+collision resolution method). The total number of key comparisons will be tracked for all n searches and a report showing the average
+number of comparisons will be displayed. The report should also contain the values of n, m, and the load factor α
 
 
 ## Getting Started
@@ -18,17 +23,12 @@ results will be displayed on your screen. In order to remove any executible file
 The instructions for this program are written for running on a UNIX or LINUX with all c++ dependencies already installed. 
 
 ### Installing
-https://github.com/rvanderlely/CPU-Job-Scheduler
+https://github.com/rvanderlely/Closed_Hashing
 
 
 ### Executing program
 
-```
-make 
-```
-```
-./cpu
-```
+will update later when I create a makefile.
 
 ## Help
 
@@ -37,8 +37,8 @@ Type in your termial:
 ```
 ls
 ```
-to ensure that the rachel_cpu_job_scheduler.cpp and rachel_cpu_job_scheduler.o and cpu files are all in the current location.
 If you are not in the correct folder you must navigate to the correct folder before attempting to run.
+
 ## Authors
 
 Rachel Vanderlely  
@@ -46,16 +46,10 @@ Rachel Vanderlely
 
 ## Version History
 
-* 0.1
-    *Lots of comments
-    This version is a good version to look at the first three algorithums comment explainations. SJF, Priority, FCFS are all roughly written out 
-    however the calculation was incorrect. Was missing a += there was a = in the calulation in the FCFS which was making all the other algorithums 
-    wrong. 
-
 ## License
 
 This project is not licensed.
 
 ## Acknowledgments
 
-Instructions for project given by Professor Moini of Cameron University
+Instructions for project given by Professor Moinian of Cameron University

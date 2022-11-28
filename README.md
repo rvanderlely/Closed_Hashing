@@ -1,4 +1,4 @@
-# CPU Job Scheduling Solver/Calulator 
+# Simple Closed Hashing Program
 # How To Run
 In order to run this program you must first download all source code. Next, in a terminal or IDE you will navigate to the location where the 
 saved source code is located. This program contains a makefile which will automatically compile the c++ code and turn it into an executible.
@@ -10,18 +10,6 @@ results will be displayed on your screen. In order to remove any executible file
 
 ## Description
 
-This program was created for Operating Systems class at Cameron University. This program fufills all assignment requirements. Namely, it solved the 
-the average turn around time (ATT) and the the average wait time (AWT) for 4 CPU job scheduling algorithums for 10 processes all arriving at time zero. 
-This program uses a random number generator to create random burst time for x amount of processes. Each process will be represented
-as a structure containing important information about the process such as ID, burst time, remaining burst time and priority. 
-The strucures representing the processes will be stored in a fixed array. The number of processes may be changed by changing the define
-MAXPROCESSES at the top in the hard code. This program assumes that all processes are arriving at time zero. This may be something to update later, to allow 
-for differnt arrival times. This program then is able to solve for 4 different CPU job scheduling algorithums namely, it solves for 
-First Come First Serve (FCFS), Shortest Job First (SJF), Priority Queue and Round Robin. Each scheduling algorithum, once called, 
-will return by value result argument (by refernece) the average wait time (AWT) and the average turn around time (ATT) for the total of all 
-processes within the array. The results will be printed in main. This program, based on the instrcutions given, must run in a loop 100 times. 
-This will generate random arrays of processes and find their averages of the 100 runs and display them on the screen. Inside of main, a 
-running loop will be kept to find the average of all 100 averages, as per instructions. 
 
 
 ## Getting Started
@@ -70,4 +58,4 @@ This project is not licensed.
 
 ## Acknowledgments
 
-Instructions for project given by Dr.Zhao of Cameron University
+Instructions for project given by Professor Moini of Cameron University

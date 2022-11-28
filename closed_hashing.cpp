@@ -12,21 +12,83 @@
  * of n, m, and the load factor α
  *************************************************************************************/
 
+#include<iostream>      //For i/o
+#include <cstdlib>
+#include<ctime>         //For time seed
+#include<iomanip>
+using std::cin;         //For i/o
+using std::cout;        //For i/o
+using std::setw;
+
+
+
+
 
 /************************************************************************************
  *                              Function Prototypes/Global Variables
  *************************************************************************************/
 int comparisons = 0; // A global variable, counts the number of key comparisons
-void makeEmpty(int hashTable[], int m);
+void makeEmpty(int anyTable[], int m);
 int hash(int key, int m);
 void insert(int hashTable[], int m, int newKey);
 void print(int hashTable[], int m);
 bool search(int hashTable[], int m, int key);
+void fillRandomly(int anyTable[], int n);
 
 
 /************************************************************************************
  *                                       Main
  *************************************************************************************/
+int main()
+{
+srand(time(0));                         // Use current time as seed for random generator
+int n;                                  //Declare n, the number of keys
+int m;                                  //Declare m, the table size. 
+double loadFactor;                      //Declare loadFactor, percentage of hashtable thats loaded. 
+cout<<"Enter number of keys:";          //Prompt user for keys
+cin>>n;                                 //Get user input
+m = n *1.5;                             // Set m to be 1.5 times n
+
+int hashTable[m];                       //Declare the hash table of size m
+int inputarray[n];                      //Declare an input array of size n that will hold all input keys.
+makeEmpty(hashTable,m);                 //Call the make empty function on the hash table
+print(hashTable,m);
+fillRandomly(inputarray,n);             //Fill the input array
+cout<<"The input array is\n";           //Print the input array
+print(inputarray,n);                    //Print the input array
+cout<<"\n";                             //Newline
+
+//For each key in the input array call the insert function to insert it in the hash table.
+for (int i = 0; i < n;i++)
+{
+    insert(hashTable,m,inputarray[i]);
+}
+
+cout<<"The hash table is:\n";           //Print the hashtable
+print(hashTable,m);                     //Print the hashtable
+
+
+//For each key in the input array call the search function
+for (int i = 0; i < n;i++)
+{
+    search(hashTable,m,inputarray[i]);
+    //cout<<"Search results for "<<inputarray[i]<<"is: "<<search(hashTable,m,inputarray[i])<<" \n";
+    //cout<<"Number of comps is now: "<<comparisons<<".\n";
+}
+
+
+//Calculate the load factor n / m as a percentage.
+loadFactor = ((float)n / m);
+cout<<"Number of keys = "<<n<<"\n";
+cout<<"Hash table size = "<<m<<"\n";
+cout<<"Load Factor = "<<(loadFactor*100)<<"%\n";
+cout<<"Total comparisions = "<<comparisons<<"\n";
+cout<<"Avg comps/search = "<<((float)comparisons/n)<<"\n";
+
+
+return 0;
+}
+
 
 
 
@@ -43,8 +105,12 @@ bool search(int hashTable[], int m, int key);
  * which is the value that represents empty slot.
  *************************************************************************************/
 
-void makeEmpty(int hashTable[], int m){
+void makeEmpty(int anyTable[], int m){
     
+    for (int i = 0; i <m; i++)
+    {
+        anyTable[i] = -1;
+    }
 }
 
 
@@ -64,6 +130,7 @@ void makeEmpty(int hashTable[], int m){
  *************************************************************************************/
 int hash(int key, int m)
 {
+    return (key%m);
 
 }
 
@@ -81,7 +148,12 @@ int hash(int key, int m)
  *************************************************************************************/
 void insert(int hashTable[], int m, int newKey)
 {
-
+    int desiredIndex = hash(newKey,m);
+    while(hashTable[desiredIndex]!= -1 )
+    {
+        desiredIndex = (desiredIndex + 1 ) % m;
+    }
+    hashTable[desiredIndex] = newKey;
 } 
 
 
@@ -98,8 +170,20 @@ void insert(int hashTable[], int m, int newKey)
  * Prints out the hash table in a readable manner showing the indicies and the elements
  * stored in each index. 
  *************************************************************************************/
-void print(int hashTable[], int m)
+void print(int anyTable[], int m)
 {
+    for (int i = 0; i <m; i++)
+    {
+        cout<<setw(3)<<i;
+        if (anyTable[i] == -1)
+            {
+            cout<<setw(5)<<"["<<"  ]\n";
+            }
+        else 
+            {
+            cout<<setw(5)<<"["<<anyTable[i]<<"]\n";
+            }
+    }
 
 }
 
@@ -119,7 +203,45 @@ void print(int hashTable[], int m)
  * This function uses the hash function to search for the key and searches until it 
  * hits an empty spot in the array.
  *************************************************************************************/
-bool search(int hashTable[], int m, int key){
+bool search(int hashTable[], int m, int key)
+{
+int suspectedIndex = hash(key,m);       //Find the suspected index of the key
+comparisons++;                          //Always make at least one comparison
+
+    //This will only be entered if the key isnt where supposed to be (had a collision)
+while ( hashTable[suspectedIndex]!=key && hashTable[suspectedIndex]!=-1 )
+    {
+        suspectedIndex++;
+        comparisons++;
+    }
+
+//will leave while loop if key is found OR is empty spot is hit
+if (hashTable[suspectedIndex]==key){
+    return true;
+}else{
+    return false;
+}
+
+}
+
+//}
+
+
+/************************************************************************************
+ *                                 fillRandomly Function
+ * Inputs: 
+ * 1. hashTable[], an integer array of size m where all elements are to be stored 
+ * 2. An integer n, representing the size of the inputArray to be filled.
+ * Outputs: 
+ *  None, void.
+ * Description: This function randomly fils an array with the numbers 1 through 3n.
+ *************************************************************************************/
+void fillRandomly(int anyTable[], int n)
+{
+        for (int i = 0; i <n; i++)
+    {
+        anyTable[i] = 1 + rand() % (3*n)  ;
+    }
 
 }
 

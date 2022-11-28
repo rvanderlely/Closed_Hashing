@@ -15,26 +15,22 @@
 #include<iostream>      //For i/o
 #include <cstdlib>
 #include<ctime>         //For time seed
-#include<iomanip>
+#include<iomanip>       //For setw
 using std::cin;         //For i/o
 using std::cout;        //For i/o
 using std::setw;
 
 
-
-
-
 /************************************************************************************
  *                              Function Prototypes/Global Variables
  *************************************************************************************/
-int comparisons = 0; // A global variable, counts the number of key comparisons
+int comparisons = 0;                        
 void makeEmpty(int anyTable[], int m);
 int hash(int key, int m);
 void insert(int hashTable[], int m, int newKey);
 void print(int hashTable[], int m);
 bool search(int hashTable[], int m, int key);
 void fillRandomly(int anyTable[], int n);
-
 
 /************************************************************************************
  *                                       Main
@@ -52,11 +48,9 @@ m = n *1.5;                             // Set m to be 1.5 times n
 int hashTable[m];                       //Declare the hash table of size m
 int inputarray[n];                      //Declare an input array of size n that will hold all input keys.
 makeEmpty(hashTable,m);                 //Call the make empty function on the hash table
-print(hashTable,m);
 fillRandomly(inputarray,n);             //Fill the input array
-cout<<"The input array is\n";           //Print the input array
-print(inputarray,n);                    //Print the input array
-cout<<"\n";                             //Newline
+//cout<<"The input array is\n";         //Print the input array, if needed.
+//print(inputarray,n);                  //Print the input array, if needed.
 
 //For each key in the input array call the insert function to insert it in the hash table.
 for (int i = 0; i < n;i++)
@@ -64,9 +58,10 @@ for (int i = 0; i < n;i++)
     insert(hashTable,m,inputarray[i]);
 }
 
-cout<<"The hash table is:\n";           //Print the hashtable
+//Print the Closed Hash Table 
+cout<<"\nClosed Hash Table:\n";         //Print the hashtable
+cout<<"--------------------\n";         //Print the hashtable
 print(hashTable,m);                     //Print the hashtable
-
 
 //For each key in the input array call the search function
 for (int i = 0; i < n;i++)
@@ -76,28 +71,23 @@ for (int i = 0; i < n;i++)
     //cout<<"Number of comps is now: "<<comparisons<<".\n";
 }
 
-
 //Calculate the load factor n / m as a percentage.
 loadFactor = ((float)n / m);
 cout<<"Number of keys = "<<n<<"\n";
 cout<<"Hash table size = "<<m<<"\n";
 cout<<"Load Factor = "<<(loadFactor*100)<<"%\n";
 cout<<"Total comparisions = "<<comparisons<<"\n";
-cout<<"Avg comps/search = "<<((float)comparisons/n)<<"\n";
-
+cout<<"Avg comps/search = "<<((float)comparisons/n)<<"\n\n";
 
 return 0;
 }
 
-
-
-
 /************************************************************************************
  *                                 makeEmpty Function
  * Inputs: 
- * 1. An integer array, int hashTable[] which is the array that will be used to hold 
+ * 1. An integer array, int anyTable[] which is the array that will be used to hold 
  *    all the elements.
- * 2. An integer m, representing the size of the hashtable. 
+ * 2. An integer m, representing the size of the table. 
  * Outputs: 
  * None, void.
  * Description:   
@@ -113,9 +103,6 @@ void makeEmpty(int anyTable[], int m){
     }
 }
 
-
-
-
 /************************************************************************************
  *                                 hash Function
  * Inputs: 
@@ -125,7 +112,7 @@ void makeEmpty(int anyTable[], int m){
  * An integer value is returned,namely, the spot that the element should 
  * in theory, be placed if that spot is available.
  * Description:   
- * Using the given key and hash table size m, it find the index in the range
+ * Using the given key and hash table size m, it finds the index in the range
  * 0 through (m-1) where the new element should in theory, be placed in the array. 
  *************************************************************************************/
 int hash(int key, int m)
@@ -133,7 +120,6 @@ int hash(int key, int m)
     return (key%m);
 
 }
-
 
 /************************************************************************************
  *                                 insert Function
@@ -156,19 +142,16 @@ void insert(int hashTable[], int m, int newKey)
     hashTable[desiredIndex] = newKey;
 } 
 
-
-
-
 /************************************************************************************
  *                                 print Function
  * Inputs: 
- * 1. hashTable[], an integer array of size m where all elements are to be stored 
- * 2. An integer m, representing the size of the hashtable. 
+ * 1. anyTable[], an integer array of size m where elements are to be stored 
+ * 2. An integer m, representing the size of the table 
  * Outputs: 
- * None, void.
+ * Print a table to the screen
  * Description:   
  * Prints out the hash table in a readable manner showing the indicies and the elements
- * stored in each index. 
+ * stored in each index. If no element, a blank spot will be printed. 
  *************************************************************************************/
 void print(int anyTable[], int m)
 {
@@ -184,10 +167,7 @@ void print(int anyTable[], int m)
             cout<<setw(5)<<"["<<anyTable[i]<<"]\n";
             }
     }
-
 }
-
-
 
 /************************************************************************************
  *                                 search Function
@@ -198,10 +178,10 @@ void print(int anyTable[], int m)
  * Outputs: 
  * Bool, true if found, else false. 
  * Description:   
- * Searches the hashTable for the given key and returns true/false depending on the result.
- * This function also updates the number of comparisons where a key comparison is made.
+ * Searches the hashTable for the given key and returns true if found,else false.
+ * This function also updates the number of comparisons when a key comparison is made.
  * This function uses the hash function to search for the key and searches until it 
- * hits an empty spot in the array.
+ * hits an empty spot in the array or finds the key. 
  *************************************************************************************/
 bool search(int hashTable[], int m, int key)
 {
@@ -209,41 +189,34 @@ int suspectedIndex = hash(key,m);       //Find the suspected index of the key
 comparisons++;                          //Always make at least one comparison
 
     //This will only be entered if the key isnt where supposed to be (had a collision)
-while ( hashTable[suspectedIndex]!=key && hashTable[suspectedIndex]!=-1 )
+    while ( hashTable[suspectedIndex]!=key && hashTable[suspectedIndex]!=-1 )
     {
-        suspectedIndex++;
+        suspectedIndex = (suspectedIndex + 1) % m;
         comparisons++;
     }
 
-//will leave while loop if key is found OR is empty spot is hit
-if (hashTable[suspectedIndex]==key){
-    return true;
-}else{
-    return false;
+    //will leave while loop if key is found OR is empty spot is hit
+    if (hashTable[suspectedIndex]==key){
+        return true;
+    }else{
+        return false;
+    }
 }
-
-}
-
-//}
-
 
 /************************************************************************************
  *                                 fillRandomly Function
  * Inputs: 
- * 1. hashTable[], an integer array of size m where all elements are to be stored 
+ * 1. anyTable[], an integer array of size m where all elements are to be stored 
  * 2. An integer n, representing the size of the inputArray to be filled.
  * Outputs: 
- *  None, void.
- * Description: This function randomly fils an array with the numbers 1 through 3n.
+ * None, void.
+ * Description: This function randomly fils an array with the integers 1 through 3n.
  *************************************************************************************/
 void fillRandomly(int anyTable[], int n)
 {
-        for (int i = 0; i <n; i++)
+    for (int i = 0; i <n; i++)
     {
         anyTable[i] = 1 + rand() % (3*n)  ;
     }
 
 }
-
-
-

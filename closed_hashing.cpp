@@ -11,15 +11,13 @@
  * number of comparisons will be displayed. The report should also contain the values
  * of n, m, and the load factor α
  *************************************************************************************/
-
 #include<iostream>      //For i/o
-#include <cstdlib>
+#include <cstdlib>      //for standard c lib
 #include<ctime>         //For time seed
 #include<iomanip>       //For setw
 using std::cin;         //For i/o
 using std::cout;        //For i/o
 using std::setw;
-
 
 /************************************************************************************
  *                              Function Prototypes/Global Variables
@@ -95,8 +93,8 @@ return 0;
  * which is the value that represents empty slot.
  *************************************************************************************/
 
-void makeEmpty(int anyTable[], int m){
-    
+void makeEmpty(int anyTable[], int m)
+{
     for (int i = 0; i <m; i++)
     {
         anyTable[i] = -1;
@@ -118,7 +116,6 @@ void makeEmpty(int anyTable[], int m){
 int hash(int key, int m)
 {
     return (key%m);
-
 }
 
 /************************************************************************************
